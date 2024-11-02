@@ -1,7 +1,9 @@
 use bevy::prelude::*;
 
+use crate::movement::Velocity;
+
 #[derive(Component)]
-struct Character;
+pub struct Character;
 
 pub struct CharacterPlugin;
 
@@ -26,6 +28,7 @@ fn spawn_character(
     commands.spawn((
         SpriteBundle {
             texture,
+            transform: Transform::from_xyz(0.0, 0.0, 100.0),
             ..default()
         },
         TextureAtlas {
@@ -34,6 +37,7 @@ fn spawn_character(
         },
         AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
         Character,
+        Velocity { x: 0.0, y: 0.0 },
     ));
 }
 
@@ -48,5 +52,3 @@ fn animate_character(
         }
     }
 }
-
-fn move_character(query: Query<&mut Transform, With<Character>>, time: Res<Time>) {}
