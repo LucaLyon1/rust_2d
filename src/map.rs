@@ -48,15 +48,14 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
 fn generate_map(commands: &mut Commands, textures: &TileTextures) {
     let perlin = Perlin::new(1);
     let frequency = 0.1; // Adjust this to scale terrain features
-    let mut rng = rand::thread_rng();
 
     let offset_x = (MAP_WIDTH as f32 * TILE_SIZE) / -2.0;
     let offset_y = (MAP_HEIGHT as f32 * TILE_SIZE) / -2.0;
 
     for x in 0..MAP_WIDTH {
         for y in 0..MAP_HEIGHT {
-            let noise_value = perlin.get([x as f64 * frequency, y as f64 * frequency]);
-
+            let noise_value = perlin.get([x as f64 * frequency, y as f64 * frequency])
+                + 0.5 * perlin.get([x as f64 * frequency * 2.0, y as f64 * frequency * 2.0]);
             let tile_type = if noise_value < -0.2 {
                 TileType::Water
             } else if noise_value < 0.0 {
